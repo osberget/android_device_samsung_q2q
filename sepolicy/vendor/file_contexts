@@ -1,0 +1,4 @@
+# Device-specific file contexts for q2q
+/spu(/.*)?         u:object_r:spu_file:s0
+/sec_efs(/.*)?     u:object_r:sec_efs_file:s0
+/keyrefuge(/.*)?   u:object_r:keyrefuge_file:s0

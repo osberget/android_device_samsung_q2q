@@ -1,0 +1,4 @@
+# Samsung-specific partition file types for q2q
+# type spu_file, file_type;
+type sec_efs_file, file_type;
+type keyrefuge_file, file_type;

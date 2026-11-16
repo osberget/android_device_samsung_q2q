@@ -1,0 +1,46 @@
+service boringssl_self_test32_vendor /vendor/bin/boringssl_self_test32
+    override
+    disabled
+    user root
+
+service boringssl_self_test64_vendor /vendor/bin/boringssl_self_test64
+    override
+    disabled
+    user root
+
+service boringssl_self_test_apex32 /apex/com.android.conscrypt/bin/boringssl_self_test32
+    override
+    disabled
+    user root
+
+service boringssl_self_test_apex64 /apex/com.android.conscrypt/bin/boringssl_self_test64
+    override
+    disabled
+    user root
+
+service sec-camera-provider-4-0 /vendor/bin/hw/vendor.samsung.hardware.camera.provider@4.0-service_64
+    override
+    user system
+
+service ril-daemon /vendor/bin/hw/rild
+    override
+    restart_period 30
+    user radio
+
+service vendor.qti.hardware.display.composer /vendor/bin/hw/vendor.qti.hardware.display.composer-service
+    override
+    user system
+    group graphics drmrpc
+    capabilities SYS_ADMIN SYS_NICE SYS_RESOURCE SYS_RAWIO
+
+service vendor.adsprpcd /vendor/bin/adsprpcd
+    override
+    disabled
+    user system
+    group system
+
+service vendor.audioadsprpcd_audiopd /vendor/bin/audioadsprpcd audiopd
+    override
+    disabled
+    user system
+    group system audio

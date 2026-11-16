@@ -1,0 +1,3 @@
+#!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+./extract-files.py --regenerate_makefiles

@@ -1,0 +1,159 @@
+on early-init
+    loglevel 7
+    write /proc/sys/kernel/printk "7 7 7 7"
+    write /dev/kmsg "=== INIT SECOND STAGE STARTED SUCCESSFULLY ==="
+    write /metadata/boot_kmsg.txt "=== STAGE 2 INIT STARTED ===\n"
+    write /sys/fs/selinux/enforce 0
+    write /sys/module/subsystem_restart/parameters/disable_restart_work 2559098349
+    write /sys/module/msm_subsystem_restart/parameters/disable_restart_work 2559098349
+    setprop sys.usb.configfs 1
+    setprop sys.usb.controller a600000.dwc3
+    setprop sys.usb.config adb
+    setprop persist.sys.usb.config adb
+    setprop vendor.gatekeeper.disable_spu true
+    setprop vendor.disable_spu 1
+    setprop ro.hardware.egl adreno
+    setprop ro.hardware.vulkan adreno
+    setprop ro.board.platform lahaina
+    setprop persist.graphics.egl adreno
+    mkdir /spu 0771 system system
+    mkdir /efs 0771 system system
+    mkdir /sec_efs 0771 system system
+    mkdir /keyrefuge 0771 system system
+
+on init
+    write /dev/kmsg "=== Q2Q DEBUG: ON INIT REACHED ==="
+    write /metadata/boot_kmsg.txt "=== ON INIT REACHED ===\n"
+    setprop sys.usb.config adb
+    chmod 0666 /dev/dri/card0
+    chmod 0666 /dev/dri/renderD128
+    chown system graphics /dev/dri/card0
+    chown system graphics /dev/dri/renderD128
+    chmod 0666 /dev/ion
+    chmod 0666 /dev/dma_heap/system
+
+on post-fs
+    write /dev/kmsg "=== Q2Q DEBUG: ON POST-FS REACHED ==="
+    write /cache/boot_log.txt "POST-FS REACHED\n"
+    write /metadata/boot_kmsg.txt "=== ON POST-FS REACHED ===\n"
+    exec u:r:init:s0 root root -- /system/bin/sh /system/bin/init.q2q.modules.sh
+    mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-base-policy bind
+    mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-ext-policy bind
+    mkdir /metadata/bootlogs 0777 root root
+    start boot_dmesg
+    start boot_logcat
+    mkdir /dev/usb-ffs 0770 shell shell
+    mkdir /dev/usb-ffs/adb 0770 shell shell
+    mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
+    setprop sys.usb.config adb
+    start adbd
+
+on boot
+    write /dev/kmsg "=== Q2Q DEBUG: ON BOOT REACHED ==="
+    write /cache/boot_log.txt "BOOT REACHED\n"
+    write /metadata/boot_kmsg.txt "=== ON BOOT REACHED ===\n"
+    write /sys/fs/selinux/enforce 0
+    setprop sys.usb.config adb
+    setprop persist.sys.usb.config adb
+    setprop ro.adb.secure 0
+    start adbd
+    exec u:r:init:s0 root root -- /system/bin/sh /system/bin/init.q2q.usb.sh
+    # Disable SPSS watchdog reboot loop for all subsys nodes
+    write /sys/bus/msm_subsys/devices/subsys0/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys1/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys2/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys3/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys4/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys5/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys6/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys7/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys8/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys9/restart_level "SYSTEM"
+    write /sys/bus/msm_subsys/devices/subsys10/restart_level "SYSTEM"
+
+on post-fs-data
+    write /dev/kmsg "=== Q2Q DEBUG: ON POST-FS-DATA REACHED ==="
+    write /cache/boot_log.txt "POST-FS-DATA REACHED\n"
+    mkdir /data/media 0770 media_rw media_rw
+    mkdir /data/media/0 0770 media_rw media_rw
+    mkdir /storage/emulated 0755 root root
+    mkdir /storage/emulated/0 0755 root root
+    mount none /data/media/0 /storage/emulated/0 bind rec
+    mount none none /storage/emulated/0 slave rec
+    chown media_rw media_rw /data/media
+    chown media_rw media_rw /data/media/0
+    restorecon_recursive /data/media
+    start persistent_logcat
+
+service spss_disable /system/bin/sh -c "for f in /sys/bus/msm_subsys/devices/subsys*/name; do if grep -q spss \$f; then dir=\$(dirname \$f); echo SYSTEM > \$dir/restart_level; fi; done"
+    class early_hal
+    user root
+    group root
+    oneshot
+
+service boot_logger /system/bin/sh -c "while true; do dmesg > /cache/kmsg.txt; sleep 2; done"
+    class early_hal
+    user root
+    group root
+    seclabel u:r:su:s0
+
+service persistent_logcat /system/bin/logcat -b all -v threadtime -f /cache/logcat.txt
+    class main
+    user root
+    group root log
+    seclabel u:r:su:s0
+
+on property:sys.usb.config=adb && property:sys.usb.configfs=1
+    start adbd
+
+service health-interface-provider /vendor/bin/hw/android.hardware.health@2.1-service-samsung
+    class core
+    user system
+    group system
+    capabilities WAKE_ALARM BLOCK_SUSPEND
+    file /dev/kmsg w
+    interface android.hardware.health@2.1::IHealth default
+    interface android.hardware.health@2.0::IHealth default
+
+service boot_dmesg /system/bin/sh -c "/system/bin/dmesg -w > /metadata/bootlogs/dmesg.txt"
+    class core
+    user root
+    group root
+    seclabel u:r:init:s0
+
+service boot_logcat /system/bin/logcat -b main,system,crash -f /metadata/bootlogs/logcat.txt -r 20480 -n 3 auditd:S *:I
+    class core
+    user root
+    group root
+    seclabel u:r:init:s0
+
+on property:sys.boot_completed=1
+    setprop persist.sys.usb.config adb
+    setprop sys.usb.config adb
+    start adbd
+
+service display-allocator-provider /vendor/bin/hw/vendor.qti.hardware.display.allocator-service
+    class hal animation
+    user system
+    group graphics drmrpc
+    capabilities SYS_NICE
+    onrestart restart surfaceflinger
+    interface android.hardware.graphics.allocator@4.0::IAllocator default
+    interface android.hardware.graphics.allocator@3.0::IAllocator default
+    interface android.hardware.graphics.allocator@2.0::IAllocator default
+
+service display-composer-provider /vendor/bin/hw/vendor.qti.hardware.display.composer-service
+    class hal animation
+    user system
+    group graphics drmrpc
+    capabilities SYS_NICE SYS_RESOURCE SYS_ADMIN SYS_RAWIO
+    onrestart restart surfaceflinger
+    socket pps stream 0660 system system
+    interface android.hardware.graphics.composer@2.4::IComposer default
+    interface android.hardware.graphics.composer@2.3::IComposer default
+    interface android.hardware.graphics.composer@2.2::IComposer default
+    interface android.hardware.graphics.composer@2.1::IComposer default
+
+on property:sys.usb.config=none
+    setprop sys.usb.config adb
+    start adbd
