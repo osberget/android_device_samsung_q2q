@@ -1,11 +1,17 @@
 #!/system/bin/sh
-# Load all vendor kernel modules from modules.load, then any remaining .ko files
-if [ -f /vendor/lib/modules/modules.load ]; then
-    while read -r m; do
-        [ -n "$m" ] && insmod "/vendor/lib/modules/$m" 2>/dev/null
-    done < /vendor/lib/modules/modules.load
+MOD_DIR="/vendor/lib/modules/5.4-gki"
+if [ ! -d "$MOD_DIR" ]; then
+    MOD_DIR="/vendor/lib/modules"
 fi
 
-for f in /vendor/lib/modules/*.ko; do
+if [ -f "$MOD_DIR/modules.load" ]; then
+    while read -r m; do
+        [ -n "$m" ] && insmod "$MOD_DIR/$m" 2>/dev/null
+    done < "$MOD_DIR/modules.load"
+fi
+
+for f in "$MOD_DIR"/*.ko; do
     [ -f "$f" ] && insmod "$f" 2>/dev/null
 done
+
+setprop vendor.all.modules.ready 1

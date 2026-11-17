@@ -17,9 +17,12 @@ on early-init
     setprop ro.board.platform lahaina
     setprop persist.graphics.egl adreno
     mkdir /spu 0771 system system
-    mkdir /efs 0771 system system
-    mkdir /sec_efs 0771 system system
+    mkdir /efs 0771 radio radio
+    mkdir /sec_efs 0771 radio radio
     mkdir /keyrefuge 0771 system system
+    chown radio radio /efs
+    chown radio radio /sec_efs
+    chown radio radio /mnt/vendor/efs
 
 on init
     write /dev/kmsg "=== Q2Q DEBUG: ON INIT REACHED ==="
@@ -36,7 +39,7 @@ on post-fs
     write /dev/kmsg "=== Q2Q DEBUG: ON POST-FS REACHED ==="
     write /cache/boot_log.txt "POST-FS REACHED\n"
     write /metadata/boot_kmsg.txt "=== ON POST-FS REACHED ===\n"
-    exec u:r:init:s0 root root -- /system/bin/sh /system/bin/init.q2q.modules.sh
+    exec u:r:vendor_modprobe:s0 root root -- /system/bin/sh /system/bin/init.q2q.modules.sh
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-base-policy bind
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-ext-policy bind
     mkdir /metadata/bootlogs 0777 root root
@@ -72,18 +75,41 @@ on boot
     write /sys/bus/msm_subsys/devices/subsys10/restart_level "SYSTEM"
 
 on post-fs-data
+    setprop sys.q2q.postfs_ok 1
     write /dev/kmsg "=== Q2Q DEBUG: ON POST-FS-DATA REACHED ==="
     write /cache/boot_log.txt "POST-FS-DATA REACHED\n"
-    mkdir /data/media 0770 media_rw media_rw
-    mkdir /data/media/0 0770 media_rw media_rw
-    mkdir /storage/emulated 0755 root root
-    mkdir /storage/emulated/0 0755 root root
-    mount none /data/media/0 /storage/emulated/0 bind rec
-    mount none none /storage/emulated/0 slave rec
-    chown media_rw media_rw /data/media
-    chown media_rw media_rw /data/media/0
+    mkdir /data/media 0770 1023 1023
+    mkdir /data/media/0 0770 1023 1023
+    mkdir /data/media/0/Android 0770 1023 1023
+    mkdir /data/media/0/Android/data 0770 1023 1023
+    mkdir /data/media/0/Android/media 0770 1023 1023
+    mkdir /data/media/0/Android/obb 0770 1023 1023
+    mkdir /data/vendor/log/wifi 0770 wifi wifi
+    chown radio system /efs
+    chown radio system /mnt/vendor/efs
+    chmod 0775 /efs
+    chmod 0775 /mnt/vendor/efs
+    chown 1023 1023 /data/media
+    chown 1023 1023 /data/media/0
     restorecon_recursive /data/media
+    start q2q_modules_loader
     start persistent_logcat
+
+service q2q_modules_loader /system/bin/sh /system/bin/init.q2q.modules.sh
+    class early_hal
+    user root
+    group root
+    oneshot
+    seclabel u:r:vendor_modprobe:s0
+
+on property:vendor.all.modules.ready=1
+    start vendor.audioadsprpcd_audiopd
+    start vendor.cdsprpcd
+    start sec-camera-provider-4-0
+    restart vendor.audio-hal
+    restart audioserver
+    restart cameraserver
+    restart ril-daemon
 
 service spss_disable /system/bin/sh -c "for f in /sys/bus/msm_subsys/devices/subsys*/name; do if grep -q spss \$f; then dir=\$(dirname \$f); echo SYSTEM > \$dir/restart_level; fi; done"
     class early_hal

@@ -1,0 +1,11 @@
+on post-fs
+    # Load vendor kernel modules from /vendor/lib/modules/5.4-gki/
+    exec u:r:vendor_modprobe:s0 root root -- /vendor/bin/sh -c "for m in /vendor/lib/modules/5.4-gki/*.ko; do insmod \$m 2>/dev/null; done"
+
+    # Setup internal emulated storage if missing
+    mkdir /data/media 0770 media_rw media_rw
+    mkdir /data/media/0 0770 media_rw media_rw
+    mkdir /storage/emulated 0755 root root
+    mkdir /storage/emulated/0 0755 root root
+    mount none /data/media/0 /storage/emulated/0 bind rec
+    mount none none /storage/emulated/0 slave rec

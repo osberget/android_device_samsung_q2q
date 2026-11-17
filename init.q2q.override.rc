@@ -20,6 +20,7 @@ service boringssl_self_test_apex64 /apex/com.android.conscrypt/bin/boringssl_sel
 
 service sec-camera-provider-4-0 /vendor/bin/hw/vendor.samsung.hardware.camera.provider@4.0-service_64
     override
+    class hal
     user system
 
 service ril-daemon /vendor/bin/hw/rild
@@ -39,8 +40,12 @@ service vendor.adsprpcd /vendor/bin/adsprpcd
     user system
     group system
 
+service vendor.cdsprpcd /vendor/bin/cdsprpcd
+    override
+    user system
+    group system
+
 service vendor.audioadsprpcd_audiopd /vendor/bin/audioadsprpcd audiopd
     override
-    disabled
     user system
     group system audio

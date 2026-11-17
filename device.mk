@@ -5,6 +5,9 @@ LOCAL_PATH := device/samsung/q2q
 
 $(call inherit-product, device/samsung/sm8350-common/common.mk)
 
+# Device overlays
+PRODUCT_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
+
 # The stock q2q layout uses dynamic logical partitions inside super.
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_PRODUCT_IMAGE := true
@@ -48,13 +51,15 @@ PRODUCT_VENDOR_PROPERTIES += \
     vendor.disable_spu=1 \
     ro.crypto.state=unencrypted \
     ro.crypto.type=none \
+    persist.sys.fuse=true \
+    ro.sys.sdcardfs=false \
     ro.security.vaultkeeper.native=0
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/dtbo.img:dtbo.img \
     $(LOCAL_PATH)/seccomp/samsung.software.media.c2@1.0-policy:system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy \
-    $(LOCAL_PATH)/init.q2q.system.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.q2q.rc \
-    $(LOCAL_PATH)/init.q2q.override.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.q2q.override.rc \
+    $(LOCAL_PATH)/init.q2q.system.rc:system/etc/init/init.q2q.system.rc \
+    $(LOCAL_PATH)/init.q2q.override.rc:system/etc/init/init.q2q.override.rc \
     $(LOCAL_PATH)/init.q2q.usb.sh:system/bin/init.q2q.usb.sh \
     $(LOCAL_PATH)/init.q2q.modules.sh:system/bin/init.q2q.modules.sh \
     $(LOCAL_PATH)/sepolicy/30.0.cil:$(TARGET_COPY_OUT_SYSTEM)/etc/selinux/mapping/30.0.cil \
