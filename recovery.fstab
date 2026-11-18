@@ -40,7 +40,7 @@ odm                                                /odm                ext4     
 /dev/block/by-name/metadata                        /metadata           ext4      noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=remount-ro,sync	wait,formattable,first_stage_mount,check
 /dev/block/bootdevice/by-name/cache	/cache	ext4	noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=remount-ro	wait,check,formattable
 /dev/block/bootdevice/by-name/persist	/mnt/vendor/persist	ext4	noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=remount-ro	wait,check,nofail
-/dev/block/bootdevice/by-name/userdata	/data	f2fs	noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=nobarrier	latemount,wait,check,formattable,quota,reservedsize=128M,sysfs_path=/sys/devices/platform/soc/1d84000.ufshc,checkpoint=fs
+/dev/block/bootdevice/by-name/userdata	/data	f2fs	noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=nobarrier	latemount,wait,check,formattable,quota,reservedsize=128M,sysfs_path=/sys/devices/platform/soc/1d84000.ufshc,checkpoint=fs,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized+wrappedkey_v0
 /dev/block/bootdevice/by-name/boot                    /boot                  emmc    defaults                                              defaults
 /dev/block/bootdevice/by-name/recovery                /recovery              emmc    defaults                                              defaults
 /dev/block/bootdevice/by-name/dtbo                    /dtbo                  emmc    defaults                                              defaults

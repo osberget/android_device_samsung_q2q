@@ -39,6 +39,7 @@ on post-fs
     write /dev/kmsg "=== Q2Q DEBUG: ON POST-FS REACHED ==="
     write /cache/boot_log.txt "POST-FS REACHED\n"
     write /metadata/boot_kmsg.txt "=== ON POST-FS REACHED ===\n"
+    start q2q_vendor_rw
     exec u:r:vendor_modprobe:s0 root root -- /system/bin/sh /system/bin/init.q2q.modules.sh
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-base-policy bind
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-ext-policy bind
@@ -60,6 +61,7 @@ on boot
     setprop persist.sys.usb.config adb
     setprop ro.adb.secure 0
     start adbd
+    stop ril-daemon
     exec u:r:init:s0 root root -- /system/bin/sh /system/bin/init.q2q.usb.sh
     # Disable SPSS watchdog reboot loop for all subsys nodes
     write /sys/bus/msm_subsys/devices/subsys0/restart_level "SYSTEM"
@@ -92,8 +94,17 @@ on post-fs-data
     chown 1023 1023 /data/media
     chown 1023 1023 /data/media/0
     restorecon_recursive /data/media
+    mkdir /vendor/etc/camera 0755 root root
+    mount none /system/etc/q2q_camera /vendor/etc/camera bind
     start q2q_modules_loader
     start persistent_logcat
+
+service q2q_vendor_rw /system/bin/sh /system/bin/init.q2q.vendor_rw.sh
+    class early_hal
+    user root
+    group root
+    oneshot
+    seclabel u:r:su:s0
 
 service q2q_modules_loader /system/bin/sh /system/bin/init.q2q.modules.sh
     class early_hal
@@ -103,13 +114,17 @@ service q2q_modules_loader /system/bin/sh /system/bin/init.q2q.modules.sh
     seclabel u:r:vendor_modprobe:s0
 
 on property:vendor.all.modules.ready=1
+    write /sys/kernel/boot_adsp/boot 1
     start vendor.audioadsprpcd_audiopd
     start vendor.cdsprpcd
     start sec-camera-provider-4-0
-    restart vendor.audio-hal
-    restart audioserver
-    restart cameraserver
-    restart ril-daemon
+    stop vendor.audio-hal
+    stop audioserver
+    start vendor.audio-hal
+    start audioserver
+    start cameraserver
+    start network_config
+    start sim_config
 
 service spss_disable /system/bin/sh -c "for f in /sys/bus/msm_subsys/devices/subsys*/name; do if grep -q spss \$f; then dir=\$(dirname \$f); echo SYSTEM > \$dir/restart_level; fi; done"
     class early_hal
@@ -157,6 +172,8 @@ on property:sys.boot_completed=1
     setprop persist.sys.usb.config adb
     setprop sys.usb.config adb
     start adbd
+    stop ril-daemon
+    exec - root root -- /system/bin/sm mount 'emulated;0'
 
 service display-allocator-provider /vendor/bin/hw/vendor.qti.hardware.display.allocator-service
     class hal animation

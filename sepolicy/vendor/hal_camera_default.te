@@ -1,0 +1,2 @@
+allow hal_camera_default vendor_xdsp_device:chr_file { open read write ioctl getattr };
+allowxperm hal_camera_default vendor_xdsp_device:chr_file ioctl { 0x5200-0x52ff };

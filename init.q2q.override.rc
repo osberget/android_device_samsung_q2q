@@ -25,6 +25,7 @@ service sec-camera-provider-4-0 /vendor/bin/hw/vendor.samsung.hardware.camera.pr
 
 service ril-daemon /vendor/bin/hw/rild
     override
+    disabled
     restart_period 30
     user radio
 

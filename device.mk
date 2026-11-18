@@ -5,9 +5,6 @@ LOCAL_PATH := device/samsung/q2q
 
 $(call inherit-product, device/samsung/sm8350-common/common.mk)
 
-# Device overlays
-PRODUCT_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
-
 # The stock q2q layout uses dynamic logical partitions inside super.
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_PRODUCT_IMAGE := true
@@ -43,7 +40,14 @@ PRODUCT_SYSTEM_PROPERTIES += \
     dalvik.vm.usejitprofiles=false \
     ro.sys.fw.dex2oat_thread_count=4 \
     dalvik.vm.dex2oat-threads=4 \
-    dalvik.vm.boot-dex2oat-threads=4
+    dalvik.vm.boot-dex2oat-threads=4 \
+    ro.kernel.ebpf.supported=false \
+    ro.net.bpf.supported=false \
+    persist.sys.fflag.override.settings_enable_bpf=false \
+    persist.sys.fuse=true \
+    ro.sys.sdcardfs=false \
+    persist.radio.multisim.config=dsds \
+    ro.multisim.simslotcount=2
 
 # Disable Qualcomm SPU / StrongBox SPU checks and set unencrypted data state
 PRODUCT_VENDOR_PROPERTIES += \
@@ -51,17 +55,17 @@ PRODUCT_VENDOR_PROPERTIES += \
     vendor.disable_spu=1 \
     ro.crypto.state=unencrypted \
     ro.crypto.type=none \
-    persist.sys.fuse=true \
-    ro.sys.sdcardfs=false \
     ro.security.vaultkeeper.native=0
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/dtbo.img:dtbo.img \
+    $(LOCAL_PATH)/configs/camera/camxoverridesettings.txt:system/etc/q2q_camera/camxoverridesettings.txt \
     $(LOCAL_PATH)/seccomp/samsung.software.media.c2@1.0-policy:system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy \
     $(LOCAL_PATH)/init.q2q.system.rc:system/etc/init/init.q2q.system.rc \
     $(LOCAL_PATH)/init.q2q.override.rc:system/etc/init/init.q2q.override.rc \
     $(LOCAL_PATH)/init.q2q.usb.sh:system/bin/init.q2q.usb.sh \
     $(LOCAL_PATH)/init.q2q.modules.sh:system/bin/init.q2q.modules.sh \
+    $(LOCAL_PATH)/init.q2q.vendor_rw.sh:system/bin/init.q2q.vendor_rw.sh \
     $(LOCAL_PATH)/sepolicy/30.0.cil:$(TARGET_COPY_OUT_SYSTEM)/etc/selinux/mapping/30.0.cil \
     $(LOCAL_PATH)/sepolicy/30.0.compat.cil:$(TARGET_COPY_OUT_SYSTEM)/etc/selinux/mapping/30.0.compat.cil \
     $(LOCAL_PATH)/cgroups.json:$(TARGET_COPY_OUT_VENDOR)/etc/cgroups.json \
