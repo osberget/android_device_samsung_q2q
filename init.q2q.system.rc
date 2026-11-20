@@ -94,8 +94,6 @@ on post-fs-data
     chown 1023 1023 /data/media
     chown 1023 1023 /data/media/0
     restorecon_recursive /data/media
-    mkdir /vendor/etc/camera 0755 root root
-    mount none /system/etc/q2q_camera /vendor/etc/camera bind
     start q2q_modules_loader
     start persistent_logcat
 
@@ -173,7 +171,18 @@ on property:sys.boot_completed=1
     setprop sys.usb.config adb
     start adbd
     stop ril-daemon
-    exec - root root -- /system/bin/sm mount 'emulated;0'
+
+# Repair emulated storage only after user 0's encrypted storage is available.
+on property:sys.user.0.ce_available=true
+    start q2q_storage_repair
+
+service q2q_storage_repair /system/bin/sh /system/bin/init.q2q.storage.sh
+    class late_start
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:su:s0
 
 service display-allocator-provider /vendor/bin/hw/vendor.qti.hardware.display.allocator-service
     class hal animation

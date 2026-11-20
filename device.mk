@@ -1,5 +1,6 @@
 # Copyright (C) 2026 The q2q Device Tree Authors
 # SPDX-License-Identifier: Apache-2.0
+# NOTE: This device uses prebuilt stock vendor.img. All custom properties must be placed under PRODUCT_SYSTEM_PROPERTIES.
 
 LOCAL_PATH := device/samsung/q2q
 
@@ -20,6 +21,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Ensure ADB is enabled and accessible without key prompts during bringup
 PRODUCT_SYSTEM_PROPERTIES += \
+    persist.vendor.camera.disableCVPDriver=TRUE \
     persist.sys.usb.config=adb \
     persist.service.adb.enable=1 \
     persist.service.debuggable=1 \
@@ -47,7 +49,9 @@ PRODUCT_SYSTEM_PROPERTIES += \
     persist.sys.fuse=true \
     ro.sys.sdcardfs=false \
     persist.radio.multisim.config=dsds \
-    ro.multisim.simslotcount=2
+    ro.multisim.simslotcount=2 \
+    persist.vendor.camera.disableCVPDriver=TRUE \
+    disableCVPDriver=TRUE
 
 # Disable Qualcomm SPU / StrongBox SPU checks and set unencrypted data state
 PRODUCT_VENDOR_PROPERTIES += \
@@ -63,6 +67,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/seccomp/samsung.software.media.c2@1.0-policy:system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy \
     $(LOCAL_PATH)/init.q2q.system.rc:system/etc/init/init.q2q.system.rc \
     $(LOCAL_PATH)/init.q2q.override.rc:system/etc/init/init.q2q.override.rc \
+    $(LOCAL_PATH)/init.q2q.storage.sh:system/bin/init.q2q.storage.sh \
     $(LOCAL_PATH)/init.q2q.usb.sh:system/bin/init.q2q.usb.sh \
     $(LOCAL_PATH)/init.q2q.modules.sh:system/bin/init.q2q.modules.sh \
     $(LOCAL_PATH)/init.q2q.vendor_rw.sh:system/bin/init.q2q.vendor_rw.sh \
@@ -79,6 +84,7 @@ PRODUCT_EXTRA_VNDK_VERSIONS := 33 34
 
 # Security, HIDL & AIDL compatibility shims & libraries for Android 15 vendor on Android 17 framework
 PRODUCT_PACKAGES += \
+    audio.primary.lahaina \
     android.hardware.audio@6.0 \
     android.hardware.audio.common@6.0 \
     android.hardware.audio.effect@6.0 \

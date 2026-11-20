@@ -87,7 +87,7 @@ TARGET_OTA_ALLOW_NON_AB := true
 BOARD_VNDK_VERSION := current
 
 # Prebuilt vendor image, vendor_boot image, boot image, DTB, and DTBO
-BOARD_PREBUILT_VENDORIMAGE := device/samsung/q2q/vendor.img
+BOARD_PREBUILT_VENDORIMAGE := out/target/product/q2q/vendor-audio.img
 BOARD_PREBUILT_VENDOR_BOOTIMAGE := device/samsung/q2q/vendor_boot.img
 BOARD_PREBUILT_BOOTIMAGE := device/samsung/q2q/boot.img
 BOARD_PREBUILT_DTB := device/samsung/q2q/dtb
