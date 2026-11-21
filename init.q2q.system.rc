@@ -61,7 +61,7 @@ on boot
     setprop persist.sys.usb.config adb
     setprop ro.adb.secure 0
     start adbd
-    stop ril-daemon
+    exec u:r:su:s0 root root -- /system/bin/ip link set rmnet_ipa0 up
     exec u:r:init:s0 root root -- /system/bin/sh /system/bin/init.q2q.usb.sh
     # Disable SPSS watchdog reboot loop for all subsys nodes
     write /sys/bus/msm_subsys/devices/subsys0/restart_level "SYSTEM"
@@ -170,7 +170,12 @@ on property:sys.boot_completed=1
     setprop persist.sys.usb.config adb
     setprop sys.usb.config adb
     start adbd
-    stop ril-daemon
+    exec u:r:su:s0 root root -- /vendor/bin/secril_config_svc SimConfig
+    exec u:r:su:s0 root root -- /vendor/bin/secril_config_svc NetworkConfig
+    start vendor.netmgrd
+    start vendor.ipacm
+    start ril-daemon
+    exec u:r:su:s0 root root -- /system/bin/sh /system/bin/init.q2q.ims.sh
 
 # Repair emulated storage only after user 0's encrypted storage is available.
 on property:sys.user.0.ce_available=true

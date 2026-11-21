@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apns version="8">
+  <apn carrier="Happybytes Internet"
+      mcc="242"
+      mnc="15"
+      carrier_id="2524"
+      apn="internet"
+      authtype="1"
+      type="default,supl"
+      protocol="IP"
+      roaming_protocol="IP"
+  />
+  <apn carrier="Happybytes MMS"
+      mcc="242"
+      mnc="15"
+      carrier_id="2524"
+      apn="mms"
+      mmsc="http://mms.media"
+      type="mms"
+      protocol="IP"
+      roaming_protocol="IP"
+  />
+  <!-- Floss IMS uses the carrier's IMS-capable cellular network for SIP/IPsec. -->
+  <apn carrier="Happybytes IMS"
+      mcc="242"
+      mnc="15"
+      carrier_id="2524"
+      apn="ims"
+      type="ims"
+      protocol="IPV4V6"
+      roaming_protocol="IPV4V6"
+  />
+  <apn carrier="Telenor"
+      mcc="242"
+      mnc="01"
+      carrier_id="1"
+      apn="telenor.smart"
+      type="default,supl,mms"
+      protocol="IP"
+      roaming_protocol="IP"
+  />
+</apns>

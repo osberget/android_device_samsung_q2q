@@ -25,9 +25,10 @@ service sec-camera-provider-4-0 /vendor/bin/hw/vendor.samsung.hardware.camera.pr
 
 service ril-daemon /vendor/bin/hw/rild
     override
-    disabled
-    restart_period 30
+    class main
     user radio
+    group radio cache inet misc audio log oem_2901 system drmrpc vpn readproc wakelock net_admin
+    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW SYS_ADMIN CHOWN SYS_TIME
 
 service vendor.qti.hardware.display.composer /vendor/bin/hw/vendor.qti.hardware.display.composer-service
     override

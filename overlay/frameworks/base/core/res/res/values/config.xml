@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Is the fingerprint sensor located on the power button? -->
+    <bool name="config_is_powerbutton_fps">true</bool>
+
+    <!-- Maximum number of fingerprints per user -->
+    <integer name="config_fingerprintMaxTemplatesPerUser">5</integer>
+</resources>

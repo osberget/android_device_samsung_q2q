@@ -1,0 +1,31 @@
+android_app {
+    name: "PhhIms",
+    srcs: ["app/src/main/java/**/*.kt", "app/src/main/java/**/*.java"],
+    resource_dirs: ["app/src/main/res"],
+    manifest: "app/src/main/AndroidManifest.xml",
+    certificate: "platform",
+    privileged: true,
+    platform_apis: true,
+    static_libs: [
+      "com.google.android.material_material",
+      "kotlinx-coroutines-android",
+      "ImsMediaFramework",
+    ],
+    // phh's prebuilt RNNoise JNI lib, packaged in the APK so an adb-installed update works
+    jni_libs: ["librnnoise_jni_phh"],
+    use_embedded_native_libs: true,
+    compile_multilib: "64",
+}
+
+cc_prebuilt_library_shared {
+    name: "librnnoise_jni_phh",
+    stem: "librnnoise_jni",
+    srcs: ["app/jniLibs/arm64-v8a/librnnoise_jni.so"],
+    compile_multilib: "64",
+    check_elf_files: false,
+    strip: {
+        none: true,
+    },
+    sdk_version: "current",
+}
+

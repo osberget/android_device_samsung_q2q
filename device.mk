@@ -6,6 +6,12 @@ LOCAL_PATH := device/samsung/q2q
 
 $(call inherit-product, device/samsung/sm8350-common/common.mk)
 
+# Device Overlays
+PRODUCT_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
+
+# Open-source Phh/Floss IMS service replaces the unavailable Samsung IMS app.
+PRODUCT_PACKAGES += PhhIms
+
 # The stock q2q layout uses dynamic logical partitions inside super.
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_PRODUCT_IMAGE := true
@@ -50,6 +56,7 @@ PRODUCT_SYSTEM_PROPERTIES += \
     ro.sys.sdcardfs=false \
     persist.radio.multisim.config=dsds \
     ro.multisim.simslotcount=2 \
+    ro.telephony.default_network=26,26 \
     persist.vendor.camera.disableCVPDriver=TRUE \
     disableCVPDriver=TRUE
 
@@ -63,6 +70,9 @@ PRODUCT_VENDOR_PROPERTIES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/dtbo.img:dtbo.img \
+    $(LOCAL_PATH)/configs/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml \
+    $(LOCAL_PATH)/configs/permissions/privapp-permissions-me.phh.ims.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-me.phh.ims.xml \
+    $(LOCAL_PATH)/configs/permissions/default-permissions-me.phh.ims.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/default-permissions/default-permissions-me.phh.ims.xml \
     $(LOCAL_PATH)/configs/camera/camxoverridesettings.txt:system/etc/q2q_camera/camxoverridesettings.txt \
     $(LOCAL_PATH)/seccomp/samsung.software.media.c2@1.0-policy:system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy \
     $(LOCAL_PATH)/init.q2q.system.rc:system/etc/init/init.q2q.system.rc \
@@ -71,6 +81,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init.q2q.usb.sh:system/bin/init.q2q.usb.sh \
     $(LOCAL_PATH)/init.q2q.modules.sh:system/bin/init.q2q.modules.sh \
     $(LOCAL_PATH)/init.q2q.vendor_rw.sh:system/bin/init.q2q.vendor_rw.sh \
+    $(LOCAL_PATH)/init.q2q.ims.sh:system/bin/init.q2q.ims.sh \
     $(LOCAL_PATH)/sepolicy/30.0.cil:$(TARGET_COPY_OUT_SYSTEM)/etc/selinux/mapping/30.0.cil \
     $(LOCAL_PATH)/sepolicy/30.0.compat.cil:$(TARGET_COPY_OUT_SYSTEM)/etc/selinux/mapping/30.0.compat.cil \
     $(LOCAL_PATH)/cgroups.json:$(TARGET_COPY_OUT_VENDOR)/etc/cgroups.json \
@@ -84,6 +95,7 @@ PRODUCT_EXTRA_VNDK_VERSIONS := 33 34
 
 # Security, HIDL & AIDL compatibility shims & libraries for Android 15 vendor on Android 17 framework
 PRODUCT_PACKAGES += \
+    libaudiohal@6.0 \
     audio.primary.lahaina \
     android.hardware.audio@6.0 \
     android.hardware.audio.common@6.0 \
