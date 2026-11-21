@@ -18,6 +18,10 @@ class PhhImsBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(ctxt: Context, intent: Intent) {
         Rlog.d(TAG, "Alarm fired with ${intent.action}")
+        if (intent.action == "android.intent.action.SIM_STATE_CHANGED") {
+            PhhImsService.instance?.registerAllMmTelFeatures()
+            return
+        }
         if (intent.action == ALARM_PERIODIC_REGISTER) {
             val imsService = PhhImsService.Companion.instance!!
             // rearm alarm
@@ -25,7 +29,7 @@ class PhhImsBroadcastReceiver : BroadcastReceiver() {
             // XXX take some lock until this comes back?
             // (not function return, but callback after notify)
             CoroutineScope(Dispatchers.IO).launch {
-                imsService.mmTelFeature?.sipHandler?.register()
+                imsService.registerAllMmTelFeatures()
             }
             return
         }

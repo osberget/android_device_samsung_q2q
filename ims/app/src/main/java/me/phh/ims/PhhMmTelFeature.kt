@@ -1,9 +1,12 @@
 //SPDX-License-Identifier: GPL-2.0
 package me.phh.ims
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Message
 import android.telephony.Rlog
+import android.telephony.SubscriptionManager
+import android.telephony.TelephonyManager
 import android.telephony.ims.ImsCallProfile
 import android.telephony.ims.ImsCallSessionListener
 import android.telephony.ims.ImsReasonInfo
@@ -30,6 +33,7 @@ class PhhMmTelFeature(val slotId: Int) : PhhMmTelFeatureProtected(slotId) {
 
     val imsSms = PhhImsSms(slotId)
     lateinit var sipHandler: SipHandler
+    private var subscriptionsListener: SubscriptionManager.OnSubscriptionsChangedListener? = null
 
     override fun createCallProfile(callSessionType: Int, callType: Int): ImsCallProfile {
         Rlog.d(TAG, "$slotId createCallProfile $callSessionType $callType")
@@ -134,14 +138,45 @@ class PhhMmTelFeature(val slotId: Int) : PhhMmTelFeatureProtected(slotId) {
         return ImsUtImplBase()
     }
 
+    @SuppressLint("MissingPermission")
     override fun onFeatureReady() {
         Rlog.d(TAG, "$slotId onFeatureReady")
-        if(this::sipHandler.isInitialized) return
+        startSipWhenSubscriptionIsReady()
+    }
 
-        // call onRegistering first then
-        // register SIP here and call onRegistered after .. register.
+    @SuppressLint("MissingPermission")
+    @Synchronized
+    private fun startSipWhenSubscriptionIsReady() {
+        if (this::sipHandler.isInitialized) return
         val imsService = PhhImsService.Companion.instance!!
-        sipHandler = SipHandler(imsService)
+        val subscriptionManager = imsService.getSystemService(SubscriptionManager::class.java)
+        val subscription = subscriptionManager.activeSubscriptionInfoList
+            ?.firstOrNull { it.simSlotIndex == slotId }
+        val telephonyManager = imsService.getSystemService(TelephonyManager::class.java)
+        val simReady = subscription?.let {
+            telephonyManager.createForSubscriptionId(it.subscriptionId).simState ==
+                TelephonyManager.SIM_STATE_READY
+        } == true
+        if (!simReady) {
+            Rlog.d(TAG, "$slotId SIM is not ready; deferring IMS setup")
+            if (subscriptionsListener == null) {
+                val listener = object : SubscriptionManager.OnSubscriptionsChangedListener() {
+                    override fun onSubscriptionsChanged() {
+                        startSipWhenSubscriptionIsReady()
+                    }
+                }
+                subscriptionsListener = listener
+                subscriptionManager.addOnSubscriptionsChangedListener(imsService.mainExecutor, listener)
+            }
+            return
+        }
+        subscriptionsListener?.let {
+            subscriptionManager.removeOnSubscriptionsChangedListener(it)
+            subscriptionsListener = null
+        }
+
+        // call onRegistering first and call onRegistered after SIP registration.
+        sipHandler = SipHandler(imsService, slotId = slotId)
         sipHandler.imsFailureCallback = { imsService.getRegistration(slotId).onDeregistered(null) }
         sipHandler.imsReadyCallback = {
             imsService.getRegistration(slotId).onRegistered(REGISTRATION_TECH_LTE)
@@ -265,6 +300,11 @@ class PhhMmTelFeature(val slotId: Int) : PhhMmTelFeatureProtected(slotId) {
         setAudioHandlerAndroid()
         imsService.getRegistration(slotId).onRegistering(REGISTRATION_TECH_LTE)
         sipHandler.getVolteNetwork()
+    }
+
+    fun registerIfReady() {
+        if (this::sipHandler.isInitialized) sipHandler.register()
+        else startSipWhenSubscriptionIsReady()
     }
 
     // Call audio is ours (RTP on the AP), not the modem's: with AUDIO_HANDLER_ANDROID telephony

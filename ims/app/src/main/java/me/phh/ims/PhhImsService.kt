@@ -29,6 +29,7 @@ class PhhImsService : ImsService() {
 
         val intentFilter = IntentFilter()
         intentFilter.addAction(receiver.ALARM_PERIODIC_REGISTER)
+        intentFilter.addAction("android.intent.action.SIM_STATE_CHANGED")
         this.registerReceiver(receiver, intentFilter, Context.RECEIVER_NOT_EXPORTED)
 
         this.armPeriodicRegisterAlarm()
@@ -51,16 +52,18 @@ class PhhImsService : ImsService() {
         Rlog.d(TAG, "Alarm set")
     }
 
-    // XXX one per slot id...
-    var mmTelFeature: PhhMmTelFeature? = null
+    // Each SIM slot has independent MMTEL and registration state.
+    val mmTelFeatures = mutableMapOf<Int, PhhMmTelFeature>()
     override fun createMmTelFeature(slotId: Int): MmTelFeature {
-        Rlog.d(TAG, "createMmTelFeature")
-        var feature = mmTelFeature
-        if (feature == null) {
-            feature = PhhMmTelFeature(slotId)
-            mmTelFeature = feature
+        Rlog.d(TAG, "createMmTelFeature for slot $slotId")
+        return synchronized(mmTelFeatures) {
+            mmTelFeatures.getOrPut(slotId) { PhhMmTelFeature(slotId) }
         }
-        return feature
+    }
+
+    fun registerAllMmTelFeatures() {
+        val features = synchronized(mmTelFeatures) { mmTelFeatures.values.toList() }
+        features.forEach { it.registerIfReady() }
     }
     override fun createRcsFeature(slotId: Int): RcsFeature? {
         Rlog.d(TAG, "createRcsFeature")
@@ -81,11 +84,12 @@ class PhhImsService : ImsService() {
         }
     }
 
-    // XXX cache one per slot id
-    val imsRegistration = ImsRegistrationImplBase()
+    private val imsRegistrations = mutableMapOf<Int, ImsRegistrationImplBase>()
     override fun getRegistration(slotId: Int): ImsRegistrationImplBase {
         Rlog.d(TAG, "getRegistration $slotId")
-        return imsRegistration
+        return synchronized(imsRegistrations) {
+            imsRegistrations.getOrPut(slotId) { ImsRegistrationImplBase() }
+        }
     }
 
     override fun onDestroy() {

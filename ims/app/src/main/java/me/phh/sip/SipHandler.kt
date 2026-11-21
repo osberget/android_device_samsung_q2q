@@ -41,7 +41,11 @@ private data class smsHeaders(
  * (NET_CAPABILITY_EIMS) and its P-CSCF, registers with the "sos" Contact parameter, doesn't subscribe
  * to the reg event package and never reports registration to Android.
  */
-class SipHandler(val ctxt: Context, val emergency: Boolean = false) {
+class SipHandler(
+    val ctxt: Context,
+    val emergency: Boolean = false,
+    private val slotId: Int? = null,
+) {
     companion object {
         private const val TAG = "PHH SipHandler"
     }
@@ -71,13 +75,18 @@ class SipHandler(val ctxt: Context, val emergency: Boolean = false) {
     }
 
     @SuppressLint("MissingPermission")
-    private val activeSubscription = subscriptionManager.activeSubscriptionInfoList!![0]
+    private val activeSubscription = subscriptionManager.activeSubscriptionInfoList
+        ?.firstOrNull { slotId == null || it.simSlotIndex == slotId }
+        ?: throw IllegalStateException("No active subscription for SIM slot $slotId")
+    private val subscriptionTelephonyManager =
+        telephonyManager.createForSubscriptionId(activeSubscription.subscriptionId)
     private val imei = telephonyManager.getDeviceId(activeSubscription.simSlotIndex)
     private val subId = activeSubscription.subscriptionId
-    private val mcc = telephonyManager.simOperator.substring(0 until 3)
+    private val simOperator = subscriptionTelephonyManager.simOperator
+    private val mcc = simOperator.substring(0 until 3)
     private var mnc =
-        telephonyManager.simOperator.substring(3).let { if (it.length == 2) "0$it" else it }
-    private val imsi = telephonyManager.subscriberId
+        simOperator.substring(3).let { if (it.length == 2) "0$it" else it }
+    private val imsi = subscriptionTelephonyManager.subscriberId
 
     /* Carrier specific settings
      */
