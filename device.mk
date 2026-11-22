@@ -9,6 +9,9 @@ $(call inherit-product, device/samsung/sm8350-common/common.mk)
 # Device Overlays
 PRODUCT_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
+# Open-source Phh/Floss IMS service replaces the unavailable Samsung IMS app.
+PRODUCT_PACKAGES += PhhIms
+
 # The stock q2q layout uses dynamic logical partitions inside super.
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_PRODUCT_IMAGE := true
@@ -73,6 +76,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/vintf/empty_manifest.xml:system/etc/empty_manifest.xml \
     $(LOCAL_PATH)/configs/media/media_codecs.xml:system/etc/media_codecs.xml \
     $(LOCAL_PATH)/../sm8350-common/audio/configs/audio_policy_configuration.xml:system/etc/audio_policy_configuration.xml \
+    $(LOCAL_PATH)/configs/permissions/privapp-permissions-me.phh.ims.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-me.phh.ims.xml \
+    $(LOCAL_PATH)/configs/permissions/default-permissions-me.phh.ims.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/default-permissions/default-permissions-me.phh.ims.xml \
     $(LOCAL_PATH)/configs/camera/camxoverridesettings.txt:system/etc/q2q_camera/camxoverridesettings.txt \
     $(LOCAL_PATH)/seccomp/samsung.software.media.c2@1.0-policy:system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy \
     $(LOCAL_PATH)/init.q2q.system.rc:system/etc/init/init.q2q.system.rc \
@@ -81,6 +86,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init.q2q.usb.sh:system/bin/init.q2q.usb.sh \
     $(LOCAL_PATH)/init.q2q.modules.sh:system/bin/init.q2q.modules.sh \
     $(LOCAL_PATH)/init.q2q.vendor_rw.sh:system/bin/init.q2q.vendor_rw.sh \
+    $(LOCAL_PATH)/init.q2q.ims.sh:system/bin/init.q2q.ims.sh \
     $(LOCAL_PATH)/sepolicy/30.0.cil:$(TARGET_COPY_OUT_SYSTEM)/etc/selinux/mapping/30.0.cil \
     $(LOCAL_PATH)/sepolicy/30.0.compat.cil:$(TARGET_COPY_OUT_SYSTEM)/etc/selinux/mapping/30.0.compat.cil \
     $(LOCAL_PATH)/cgroups.json:$(TARGET_COPY_OUT_VENDOR)/etc/cgroups.json \
