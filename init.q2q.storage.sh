@@ -14,6 +14,8 @@ if [ "$(getprop sys.boot_completed)" != "1" ]; then
     exit 1
 fi
 
+sleep 10
+
 log -t q2q-storage "Repairing /data/media/0 permissions and emulated volume"
 
 mkdir -p /data/media/0/DCIM/Camera \

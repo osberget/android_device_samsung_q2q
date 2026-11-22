@@ -180,7 +180,7 @@ on property:sys.boot_completed=1
     start ril-daemon
     exec u:r:su:s0 root root -- /system/bin/sh /system/bin/init.q2q.ims.sh
     restart audioserver
-    start q2q_storage_repair
+    exec_background u:r:su:s0 root root -- /system/bin/sh /system/bin/init.q2q.storage.sh
 
 # Repair emulated storage only after user 0's encrypted storage is available.
 on property:sys.user.0.ce_available=true
