@@ -40,6 +40,9 @@ on post-fs
     write /cache/boot_log.txt "POST-FS REACHED\n"
     write /metadata/boot_kmsg.txt "=== ON POST-FS REACHED ===\n"
     start q2q_vendor_rw
+    mount none /system/etc/empty_manifest.xml /vendor/etc/vintf/manifest/sec_c2_manifest_default0.xml bind
+    mount none /system/etc/media_codecs.xml /vendor/etc/media_codecs.xml bind
+    mount none /system/etc/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml bind
     exec u:r:vendor_modprobe:s0 root root -- /system/bin/sh /system/bin/init.q2q.modules.sh
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-base-policy bind
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-ext-policy bind
@@ -176,6 +179,8 @@ on property:sys.boot_completed=1
     start vendor.ipacm
     start ril-daemon
     exec u:r:su:s0 root root -- /system/bin/sh /system/bin/init.q2q.ims.sh
+    restart audioserver
+    start q2q_storage_repair
 
 # Repair emulated storage only after user 0's encrypted storage is available.
 on property:sys.user.0.ce_available=true

@@ -51,3 +51,8 @@ service vendor.audioadsprpcd_audiopd /vendor/bin/audioadsprpcd audiopd
     override
     user system
     group system audio
+
+service samsung-software-media-c2-hal-1-0 /vendor/bin/hw/samsung.software.media.c2@1.0-service
+    override
+    disabled
+    user root
