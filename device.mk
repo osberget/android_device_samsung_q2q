@@ -60,7 +60,14 @@ PRODUCT_SYSTEM_PROPERTIES += \
     persist.vendor.camera.disableCVPDriver=TRUE \
     disableCVPDriver=TRUE \
     persist.vendor.audio.spkr_prot.enable=true \
-    persist.vendor.audio.speaker.prot.enable=true
+    persist.vendor.audio.speaker.prot.enable=true \
+    persist.bluetooth.a2dp_offload.disabled=true \
+    bluetooth.profile.a2dp.source.enabled=true \
+    bluetooth.profile.avrcp.target.enabled=true \
+    bluetooth.profile.hfp.ag.enabled=true \
+    bluetooth.profile.hid.host.enabled=true \
+    bluetooth.profile.pan.nap.enabled=true \
+    bluetooth.profile.pan.panu.enabled=true
 
 # Disable Qualcomm SPU / StrongBox SPU checks and set unencrypted data state
 PRODUCT_VENDOR_PROPERTIES += \
@@ -100,6 +107,9 @@ PRODUCT_EXTRA_VNDK_VERSIONS := 33 34
 
 # Security, HIDL & AIDL compatibility shims & libraries for Android 15 vendor on Android 17 framework
 PRODUCT_PACKAGES += \
+    android.hardware.bluetooth.audio-impl \
+    android.hardware.bluetooth.audio.xml \
+    audio.bluetooth.default \
     libaudiohal@6.0 \
     audio.primary.lahaina \
     android.hardware.audio@6.0 \
