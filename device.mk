@@ -78,6 +78,8 @@ PRODUCT_VENDOR_PROPERTIES += \
     ro.security.vaultkeeper.native=0
 
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/audio.bluetooth.default.so:system/lib64/hw/audio.bluetooth.default.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/audio.bluetooth.default.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/hw/audio.bluetooth.default.so \
     $(LOCAL_PATH)/prebuilt/bluetooth_audio/android.hardware.bluetooth.audio-impl.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/android.hardware.bluetooth.audio-impl.so \
     $(LOCAL_PATH)/prebuilt/bluetooth_audio/android.hardware.bluetooth.audio-impl.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/hw/android.hardware.bluetooth.audio-impl.so \
     $(LOCAL_PATH)/prebuilt/bluetooth_audio/libbluetooth_audio_session_aidl.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/libbluetooth_audio_session_aidl.so \
