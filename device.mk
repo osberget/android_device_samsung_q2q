@@ -78,18 +78,20 @@ PRODUCT_VENDOR_PROPERTIES += \
     ro.security.vaultkeeper.native=0
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/audio.bluetooth.default.so:system/etc/q2q_bt_libs/hw/audio.bluetooth.default.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/libbluetooth_audio_session_aidl.so:system/etc/q2q_bt_libs/libbluetooth_audio_session_aidl.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/android.hardware.bluetooth.audio-V6-ndk.so:system/etc/q2q_bt_libs/android.hardware.bluetooth.audio-V6-ndk.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/android.hardware.audio.common-V5-ndk.so:system/etc/q2q_bt_libs/android.hardware.audio.common-V5-ndk.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/android.hardware.bluetooth.audio@2.0.so:system/etc/q2q_bt_libs/android.hardware.bluetooth.audio@2.0.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/android.hardware.bluetooth.audio@2.1.so:system/etc/q2q_bt_libs/android.hardware.bluetooth.audio@2.1.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/libbluetooth_audio_session.so:system/etc/q2q_bt_libs/libbluetooth_audio_session.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/android.hardware.bluetooth.audio-impl.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/android.hardware.bluetooth.audio-impl.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/android.hardware.bluetooth.audio-impl.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/hw/android.hardware.bluetooth.audio-impl.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/libbluetooth_audio_session_aidl.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/libbluetooth_audio_session_aidl.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/android.hardware.bluetooth.audio-V6-ndk.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/android.hardware.bluetooth.audio-V6-ndk.so \
-    $(LOCAL_PATH)/prebuilt/bluetooth_audio/bluetooth_audio.xml:system/etc/q2q_bluetooth_audio.xml \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/system_ext/android.hardware.bluetooth.audio-impl.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/android.hardware.bluetooth.audio-impl.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/system_ext/android.hardware.bluetooth.audio-impl.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/hw/android.hardware.bluetooth.audio-impl.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/system_ext/libbluetooth_audio_session_aidl.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/libbluetooth_audio_session_aidl.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/system_ext/android.hardware.bluetooth.audio-V6-ndk.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/android.hardware.bluetooth.audio-V6-ndk.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/audio.bluetooth.default.so:system/etc/q2q_bt_libs/hw/audio.bluetooth.default.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/libbluetooth_audio_session_aidl.so:system/etc/q2q_bt_libs/libbluetooth_audio_session_aidl.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/android.hardware.bluetooth.audio-V6-ndk.so:system/etc/q2q_bt_libs/android.hardware.bluetooth.audio-V6-ndk.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/android.hardware.audio.common-V5-ndk.so:system/etc/q2q_bt_libs/android.hardware.audio.common-V5-ndk.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/android.hardware.bluetooth.audio@2.0.so:system/etc/q2q_bt_libs/android.hardware.bluetooth.audio@2.0.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/android.hardware.bluetooth.audio@2.1.so:system/etc/q2q_bt_libs/android.hardware.bluetooth.audio@2.1.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/libbluetooth_audio_session.so:system/etc/q2q_bt_libs/libbluetooth_audio_session.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/libflatbuffers-cpp.so:system/etc/q2q_bt_libs/libflatbuffers-cpp.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/android.hardware.audio.common@5.0.so:system/etc/q2q_bt_libs/android.hardware.audio.common@5.0.so \
+    $(LOCAL_PATH)/bluetooth_audio/bluetooth_audio.xml:system/etc/q2q_bluetooth_audio.xml \
     $(LOCAL_PATH)/configs/audio/audio_effects.xml:system/etc/q2q_audio_effects.xml \
     $(LOCAL_PATH)/dtbo.img:dtbo.img \
     $(LOCAL_PATH)/configs/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml \
