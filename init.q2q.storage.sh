@@ -38,12 +38,9 @@ sm unmount 'emulated;0' 2>/dev/null
 sleep 1
 sm mount 'emulated;0'
 
-if [ ! -e /storage/self/primary ] || [ -z "$(ls -A /storage/emulated/0 2>/dev/null)" ]; then
-    mkdir -p /storage/emulated/0 /storage/self /mnt/user/0/emulated/0 /mnt/user/0/self
-    mount --bind /data/media/0 /storage/emulated/0
-    mount --bind /data/media/0 /mnt/user/0/emulated/0
-    ln -sf /storage/emulated/0 /storage/self/primary
-    ln -sf /mnt/user/0/emulated/0 /mnt/user/0/self/primary
+if [ ! -e /storage/self/primary ]; then
+    log -t q2q-storage "StorageManager did not expose primary emulated storage; not bind-mounting raw /data/media/0"
+    exit 1
 fi
 
 log -t q2q-storage "Storage repair sequence completed"
