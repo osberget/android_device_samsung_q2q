@@ -17,6 +17,14 @@ if [ -f /system/etc/audio_policy_configuration.xml ]; then
     cp /system/etc/audio_policy_configuration.xml /dev/vendor_etc_rw/
 fi
 
+# Copy bluetooth_audio.xml into vendor/etc/vintf/manifest/
+mkdir -p /dev/vendor_etc_rw/vintf/manifest
+if [ -f /system/etc/q2q_bluetooth_audio.xml ]; then
+    cp /system/etc/q2q_bluetooth_audio.xml /dev/vendor_etc_rw/vintf/manifest/bluetooth_audio.xml
+    chmod 0644 /dev/vendor_etc_rw/vintf/manifest/bluetooth_audio.xml
+    chcon u:object_r:vendor_configs_file:s0 /dev/vendor_etc_rw/vintf/manifest/bluetooth_audio.xml
+fi
+
 # Update fstab files for unencrypted /data
 for f in /dev/vendor_etc_rw/fstab.*; do
     if [ -f "$f" ]; then

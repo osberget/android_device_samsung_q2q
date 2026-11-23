@@ -1,0 +1,11 @@
+//
+// Copyright (C) 2026 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+prebuilt_etc {
+    name: "bluetooth_audio.xml",
+    src: "bluetooth_audio.xml",
+    sub_dir: "vintf/manifest",
+    system_ext_specific: true,
+}
