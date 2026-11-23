@@ -114,6 +114,7 @@ PRODUCT_EXTRA_VNDK_VERSIONS := 33 34
 
 # Security, HIDL & AIDL compatibility shims & libraries for Android 15 vendor on Android 17 framework
 PRODUCT_PACKAGES += \
+    q2q_bt_audio_service \
     audio.bluetooth.default \
     libaudiohal@6.0 \
     audio.primary.lahaina \

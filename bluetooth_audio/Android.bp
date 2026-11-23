@@ -1,0 +1,26 @@
+//
+// Copyright (C) 2026 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+prebuilt_etc {
+    name: "bluetooth_audio.xml",
+    src: "bluetooth_audio.xml",
+    sub_dir: "vintf/manifest",
+    system_ext_specific: true,
+}
+
+cc_binary {
+    name: "q2q_bt_audio_service",
+    system_ext_specific: true,
+    srcs: [
+        "main.cpp",
+    ],
+    shared_libs: [
+        "android.hardware.bluetooth.audio-impl",
+        "libbase",
+        "libbinder_ndk",
+        "liblog",
+        "libutils",
+    ],
+}

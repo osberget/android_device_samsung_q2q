@@ -194,6 +194,12 @@ service q2q_storage_repair /system/bin/sh /system/bin/init.q2q.storage.sh
     oneshot
     seclabel u:r:su:s0
 
+service q2q_bt_audio /system_ext/bin/q2q_bt_audio_service
+    class main
+    user bluetooth
+    group bluetooth audio system
+    seclabel u:r:su:s0
+
 service display-allocator-provider /vendor/bin/hw/vendor.qti.hardware.display.allocator-service
     class hal animation
     user system
