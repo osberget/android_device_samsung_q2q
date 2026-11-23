@@ -25,6 +25,13 @@ if [ -f /system/etc/q2q_bluetooth_audio.xml ]; then
     chcon u:object_r:vendor_configs_file:s0 /dev/vendor_etc_rw/vintf/manifest/bluetooth_audio.xml
 fi
 
+# Copy q2q_audio_effects.xml into vendor/etc/audio_effects.xml
+if [ -f /system/etc/q2q_audio_effects.xml ]; then
+    cp /system/etc/q2q_audio_effects.xml /dev/vendor_etc_rw/audio_effects.xml
+    chmod 0644 /dev/vendor_etc_rw/audio_effects.xml
+    chcon u:object_r:vendor_configs_file:s0 /dev/vendor_etc_rw/audio_effects.xml
+fi
+
 # Update fstab files for unencrypted /data
 for f in /dev/vendor_etc_rw/fstab.*; do
     if [ -f "$f" ]; then

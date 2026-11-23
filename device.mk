@@ -90,6 +90,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bluetooth_audio/libbluetooth_audio_session_aidl.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/libbluetooth_audio_session_aidl.so \
     $(LOCAL_PATH)/prebuilt/bluetooth_audio/android.hardware.bluetooth.audio-V6-ndk.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/android.hardware.bluetooth.audio-V6-ndk.so \
     $(LOCAL_PATH)/prebuilt/bluetooth_audio/bluetooth_audio.xml:system/etc/q2q_bluetooth_audio.xml \
+    $(LOCAL_PATH)/configs/audio/audio_effects.xml:system/etc/q2q_audio_effects.xml \
     $(LOCAL_PATH)/dtbo.img:dtbo.img \
     $(LOCAL_PATH)/configs/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml \
     $(LOCAL_PATH)/configs/vintf/empty_manifest.xml:system/etc/empty_manifest.xml \
