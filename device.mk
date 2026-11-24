@@ -95,6 +95,14 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/libbluetooth_audio_session.so:system/etc/q2q_bt_libs/libbluetooth_audio_session.so \
     $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/libflatbuffers-cpp.so:system/etc/q2q_bt_libs/libflatbuffers-cpp.so \
     $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor/android.hardware.audio.common@5.0.so:system/etc/q2q_bt_libs/android.hardware.audio.common@5.0.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor32/hw/audio.bluetooth.default.so:system/etc/q2q_bt_libs32/hw/audio.bluetooth.default.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor32/libbluetooth_audio_session_aidl.so:system/etc/q2q_bt_libs32/libbluetooth_audio_session_aidl.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor32/android.hardware.bluetooth.audio-V6-ndk.so:system/etc/q2q_bt_libs32/android.hardware.bluetooth.audio-V6-ndk.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor32/android.hardware.audio.common-V5-ndk.so:system/etc/q2q_bt_libs32/android.hardware.audio.common-V5-ndk.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor32/android.hardware.bluetooth.audio@2.0.so:system/etc/q2q_bt_libs32/android.hardware.bluetooth.audio@2.0.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor32/android.hardware.bluetooth.audio@2.1.so:system/etc/q2q_bt_libs32/android.hardware.bluetooth.audio@2.1.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor32/libbluetooth_audio_session.so:system/etc/q2q_bt_libs32/libbluetooth_audio_session.so \
+    $(LOCAL_PATH)/prebuilt/bluetooth_audio/vendor32/libflatbuffers-cpp.so:system/etc/q2q_bt_libs32/libflatbuffers-cpp.so \
     $(LOCAL_PATH)/bluetooth_audio/bluetooth_audio.xml:system/etc/q2q_bluetooth_audio.xml \
     $(LOCAL_PATH)/configs/audio/audio_effects.xml:system/etc/q2q_audio_effects.xml \
     $(LOCAL_PATH)/dtbo.img:dtbo.img \
