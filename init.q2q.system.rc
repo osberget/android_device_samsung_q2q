@@ -43,6 +43,7 @@ on post-fs
     mount none /system/etc/empty_manifest.xml /vendor/etc/vintf/manifest/sec_c2_manifest_default0.xml bind
     mount none /system/etc/media_codecs.xml /vendor/etc/media_codecs.xml bind
     mount none /system/etc/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml bind
+    mount none /system/etc/q2q_bt_libs/hw/audio.bluetooth.default.so /vendor/lib64/hw/audio.bluetooth.default.so bind
     exec u:r:vendor_modprobe:s0 root root -- /system/bin/sh /system/bin/init.q2q.modules.sh
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-base-policy bind
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-ext-policy bind
