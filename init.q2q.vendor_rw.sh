@@ -42,15 +42,6 @@ done
 # Bind mount writable /dev/vendor_etc_rw over /vendor/etc
 mount none /dev/vendor_etc_rw /vendor/etc bind
 
-# Overlay /vendor/lib64 with overlayfs to layer all vendor bluetooth audio dependencies without copying 512MB
-mkdir -p /dev/q2q_v64_up/hw /dev/q2q_v64_wk
-cp /system/etc/q2q_bt_libs/*.so /dev/q2q_v64_up/ 2>/dev/null
-cp /system/etc/q2q_bt_libs/hw/audio.bluetooth.default.so /dev/q2q_v64_up/hw/ 2>/dev/null
-chmod 0755 /dev/q2q_v64_up /dev/q2q_v64_up/hw
-chmod 0644 /dev/q2q_v64_up/*.so /dev/q2q_v64_up/hw/*.so
-chcon -R u:object_r:vendor_file:s0 /dev/q2q_v64_up
-mount -t overlay overlay -o lowerdir=/vendor/lib64,upperdir=/dev/q2q_v64_up,workdir=/dev/q2q_v64_wk /vendor/lib64
-
 echo "=== Q2Q VENDOR_RW BIND MOUNT COMPLETE ===" > /dev/kmsg
 
 setprop vendor.q2q.vendor_rw.done 1
