@@ -27,10 +27,9 @@ What Works
    Credits
 
 - [LineageOS](https://lineageos.org)
+
 - Reference: 
 - TWRP device tree: https://gitlab.com/azkali-samsung/q2q/twrp/android_device_samsung_q2q
 - z flip3 sm8350-common tree: https://github.com/samsung-sm8350/android_device_samsung_sm8350-common/tree/flip3
 
-- Reference: 
-- TWRP device tree: https://gitlab.com/azkali-samsung/q2q/twrp/android_device_samsung_q2q
-- z flip3 common tree: https://github.com/samsung-sm8350/android_device_samsung_sm8350-common/tree/flip3
+
