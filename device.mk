@@ -164,6 +164,7 @@ PRODUCT_PACKAGES += \
     android.hardware.wifi.hostapd@1.0 \
     android.hardware.wifi.supplicant@1.0 \
     android.hidl.allocator@1.0 \
+    android.hidl.allocator@1.0-service \
     android.hidl.memory@1.0 \
     android.hidl.memory.block@1.0 \
     android.hidl.memory.token@1.0 \
