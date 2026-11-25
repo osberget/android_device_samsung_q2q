@@ -14,4 +14,7 @@
     <integer-array name="config_foldedDeviceStates">
         <item>0</item>
     </integer-array>
+
+    <!-- Default peak refresh rate -->
+    <integer name="config_defaultPeakRefreshRate">120</integer>
 </resources>
