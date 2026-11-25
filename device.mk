@@ -109,6 +109,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/permissions/privapp-permissions-me.phh.ims.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-me.phh.ims.xml \
     $(LOCAL_PATH)/configs/permissions/default-permissions-me.phh.ims.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/default-permissions/default-permissions-me.phh.ims.xml \
     $(LOCAL_PATH)/configs/camera/camxoverridesettings.txt:system/etc/q2q_camera/camxoverridesettings.txt \
+    $(LOCAL_PATH)/prebuilt/camera/q2q_cam_provider_wrapper:system/etc/q2q_camera/q2q_cam_provider_wrapper \
     $(LOCAL_PATH)/seccomp/samsung.software.media.c2@1.0-policy:system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy \
     $(LOCAL_PATH)/init.q2q.system.rc:system/etc/init/init.q2q.system.rc \
     $(LOCAL_PATH)/init.q2q.override.rc:system/etc/init/init.q2q.override.rc \

@@ -9,4 +9,9 @@
 
     <!-- Maximum number of fingerprints per user -->
     <integer name="config_fingerprintMaxTemplatesPerUser">5</integer>
+
+    <!-- Device states corresponding to the device being folded (CLOSE = 0) -->
+    <integer-array name="config_foldedDeviceStates">
+        <item>0</item>
+    </integer-array>
 </resources>
