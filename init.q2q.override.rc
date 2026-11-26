@@ -57,6 +57,11 @@ service samsung-software-media-c2-hal-1-0 /vendor/bin/hw/samsung.software.media.
     disabled
     user root
 
+service vendor-qti-media-c2-hal-1-0 /vendor/bin/hw/vendor.qti.media.c2@1.0-service
+    override
+    disabled
+    user mediacodec
+
 service hermesd /vendor/bin/hermesd /data/vendor/gatekeeper
     override
     class hal

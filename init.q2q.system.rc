@@ -58,8 +58,6 @@ on post-fs
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-base-policy bind
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-ext-policy bind
     mkdir /metadata/bootlogs 0777 root root
-    start boot_dmesg
-    start boot_logcat
     mkdir /dev/usb-ffs 0770 shell shell
     mkdir /dev/usb-ffs/adb 0770 shell shell
     mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
@@ -114,7 +112,6 @@ on post-fs-data
     chown 1023 1023 /data/media/0
     restorecon_recursive /data/media
     start q2q_modules_loader
-    start persistent_logcat
 
 service q2q_vendor_rw /system/bin/sh /system/bin/init.q2q.vendor_rw.sh
     class early_hal
@@ -154,12 +151,14 @@ service boot_logger /system/bin/sh -c "while true; do dmesg > /cache/kmsg.txt; s
     user root
     group root
     seclabel u:r:su:s0
+    disabled
 
 service persistent_logcat /system/bin/logcat -b all -v threadtime -f /cache/logcat.txt
     class main
     user root
     group root log
     seclabel u:r:su:s0
+    disabled
 
 on property:sys.usb.config=adb && property:sys.usb.configfs=1
     start adbd
@@ -178,12 +177,14 @@ service boot_dmesg /system/bin/sh -c "/system/bin/dmesg -w > /metadata/bootlogs/
     user root
     group root
     seclabel u:r:init:s0
+    disabled
 
 service boot_logcat /system/bin/logcat -b main,system,crash -f /metadata/bootlogs/logcat.txt -r 20480 -n 3 auditd:S *:I
     class core
     user root
     group root
     seclabel u:r:init:s0
+    disabled
 
 on property:sys.boot_completed=1
     setprop persist.sys.usb.config adb
