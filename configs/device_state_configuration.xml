@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<device-state-config>
+  <!-- CLOSE configuration -->
+  <device-state>
+    <identifier>0</identifier>
+    <name>CLOSE</name>
+    <properties>
+      <property>com.android.server.policy.PROPERTY_FOLDABLE_HARDWARE_CONFIGURATION_FOLD_IN_CLOSED</property>
+      <property>com.android.server.policy.PROPERTY_FOLDABLE_DISPLAY_CONFIGURATION_OUTER_PRIMARY</property>
+      <property>com.android.server.policy.PROPERTY_POWER_CONFIGURATION_TRIGGER_SLEEP</property>
+    </properties>
+    <conditions>
+      <lid-switch>
+        <open>FALSE</open>
+      </lid-switch>
+    </conditions>
+  </device-state>
+
+  <!-- OPEN configuration -->
+  <device-state>
+    <identifier>3</identifier>
+    <name>OPEN</name>
+    <properties>
+      <property>com.android.server.policy.PROPERTY_FOLDABLE_HARDWARE_CONFIGURATION_FOLD_IN_OPEN</property>
+      <property>com.android.server.policy.PROPERTY_FOLDABLE_DISPLAY_CONFIGURATION_INNER_PRIMARY</property>
+      <property>com.android.server.policy.PROPERTY_POWER_CONFIGURATION_TRIGGER_WAKE</property>
+    </properties>
+    <conditions>
+      <lid-switch>
+        <open>TRUE</open>
+      </lid-switch>
+    </conditions>
+  </device-state>
+</device-state-config>

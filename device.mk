@@ -123,6 +123,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/sepolicy/30.0.compat.cil:$(TARGET_COPY_OUT_SYSTEM)/etc/selinux/mapping/30.0.compat.cil \
     $(LOCAL_PATH)/cgroups.json:$(TARGET_COPY_OUT_VENDOR)/etc/cgroups.json \
     $(LOCAL_PATH)/cgroups.json:system/etc/cgroups.json \
+    $(LOCAL_PATH)/configs/device_state_configuration.xml:system/etc/devicestate/device_state_configuration.xml \
     system/core/rootdir/etc/ld.config.txt:system/etc/ld.config.txt \
     $(foreach f,$(wildcard $(LOCAL_PATH)/vndk-30/lib64/*.so),$(f):system/lib64/vndk-30/$(notdir $(f))) \
     $(foreach f,$(wildcard $(LOCAL_PATH)/vndk-30/lib/*.so),$(f):system/lib/vndk-30/$(notdir $(f)))

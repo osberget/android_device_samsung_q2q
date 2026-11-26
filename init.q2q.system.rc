@@ -40,6 +40,7 @@ on post-fs
     start q2q_vendor_rw
     mount none /system/etc/media_codecs.xml /vendor/etc/media_codecs.xml bind
     mount none /system/etc/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml bind
+    mount none /system/etc/devicestate/device_state_configuration.xml /vendor/etc/devicestate/device_state_configuration.xml bind
     mkdir /odm 0755 root root
     mount tmpfs tmpfs /odm mode=0755,size=64M
     mkdir /odm/lib 0755 root root
@@ -197,7 +198,9 @@ on property:sys.boot_completed=1
     start ril-daemon
     exec u:r:su:s0 root root -- /system/bin/sh /system/bin/init.q2q.ims.sh
     restart audioserver
+    exec_background u:r:su:s0 root root -- /system/bin/sh -c "sleep 2; if ! /system/bin/cmd device_state print-state 2>/dev/null | grep -qx 0; then /system/bin/cmd device_state state 0 && sleep 1.5 && /system/bin/cmd device_state state reset; fi"
     exec_background u:r:su:s0 root root -- /system/bin/sh /system/bin/init.q2q.storage.sh
+    write /sys/class/usb_notify/usb_control/usb_sl SUNNY_WORK_MODE
 
 # Repair emulated storage only after user 0's encrypted storage is available.
 on property:sys.user.0.ce_available=true
