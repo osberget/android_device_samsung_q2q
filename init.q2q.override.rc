@@ -56,3 +56,20 @@ service samsung-software-media-c2-hal-1-0 /vendor/bin/hw/samsung.software.media.
     override
     disabled
     user root
+
+service hermesd /vendor/bin/hermesd /data/vendor/gatekeeper
+    override
+    class hal
+    user system
+    socket hermes_secnvm stream 660 system system
+    group system 5678
+    capabilities WAKE_ALARM
+    seclabel u:r:su:s0
+
+service vendor.fkeymaster-default /vendor/bin/vendor.samsung.hardware.security.fkeymaster-service
+    override
+    interface aidl vendor.samsung.hardware.security.fkeymaster.ISehFkeymaster/default
+    class early_hal
+    user system
+    group system
+    seclabel u:r:su:s0

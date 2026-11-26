@@ -10,6 +10,11 @@
     <!-- Maximum number of fingerprints per user -->
     <integer name="config_fingerprintMaxTemplatesPerUser">5</integer>
 
+    <!-- Biometric sensors (ID 0 : TYPE_FINGERPRINT=2 : BIOMETRIC_STRONG=15) -->
+    <string-array name="config_biometric_sensors" translatable="false">
+        <item>0:2:15</item>
+    </string-array>
+
     <!-- Device states corresponding to the device being folded (CLOSE = 0) -->
     <integer-array name="config_foldedDeviceStates">
         <item>0</item>
