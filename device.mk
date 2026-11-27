@@ -105,7 +105,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml \
     $(LOCAL_PATH)/configs/vintf/empty_manifest.xml:system/etc/empty_manifest.xml \
     $(LOCAL_PATH)/configs/media/media_codecs.xml:system/etc/media_codecs.xml \
-    $(LOCAL_PATH)/../sm8350-common/audio/configs/audio_policy_configuration.xml:system/etc/audio_policy_configuration.xml \
+    $(LOCAL_PATH)/configs/audio/audio_policy_configuration.xml:system/etc/audio_policy_configuration.xml \
     $(LOCAL_PATH)/configs/permissions/privapp-permissions-me.phh.ims.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-me.phh.ims.xml \
     $(LOCAL_PATH)/configs/permissions/default-permissions-me.phh.ims.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/default-permissions/default-permissions-me.phh.ims.xml \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.fingerprint.xml \
@@ -134,6 +134,7 @@ PRODUCT_EXTRA_VNDK_VERSIONS := 33 34
 # Security, HIDL & AIDL compatibility shims & libraries for Android 15 vendor on Android 17 framework
 PRODUCT_PACKAGES += \
     q2q_bt_audio_service \
+    q2q_powershare \
     audio.bluetooth.default \
     libaudiohal@6.0 \
     audio.primary.lahaina \

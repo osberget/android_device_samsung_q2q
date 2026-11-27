@@ -58,6 +58,8 @@ on post-fs
     exec u:r:vendor_modprobe:s0 root root -- /system/bin/sh /system/bin/init.q2q.modules.sh
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-base-policy bind
     mount none /system/etc/seccomp_policy/samsung.software.media.c2@1.0-policy /vendor/etc/seccomp_policy/samsung.software.media.c2-ext-policy bind
+    mkdir /sys/fs/cgroup/apps 0755 system system
+    mkdir /sys/fs/cgroup/system 0755 system system
     mkdir /metadata/bootlogs 0777 root root
     mkdir /dev/usb-ffs 0770 shell shell
     mkdir /dev/usb-ffs/adb 0770 shell shell

@@ -1,0 +1,22 @@
+//
+// Copyright (C) 2026 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_binary {
+    name: "q2q_powershare",
+    system_ext_specific: true,
+    relative_install_path: "hw",
+    vintf_fragments: ["q2q_powershare.xml"],
+    init_rc: ["q2q_powershare.rc"],
+    srcs: [
+        "main.cpp",
+    ],
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "liblog",
+        "libutils",
+        "vendor.lineage.powershare-V1-ndk",
+    ],
+}

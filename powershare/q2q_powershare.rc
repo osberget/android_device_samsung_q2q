@@ -1,0 +1,11 @@
+on init
+    chown system system /sys/class/power_supply/battery/wc_tx_en
+    chown system system /sys/class/power_supply/battery/wc_tx_stop_capacity
+    chmod 0664 /sys/class/power_supply/battery/wc_tx_en
+    chmod 0664 /sys/class/power_supply/battery/wc_tx_stop_capacity
+
+service q2q_powershare /system_ext/bin/hw/q2q_powershare
+    class hal
+    user system
+    group system
+    seclabel u:r:su:s0
